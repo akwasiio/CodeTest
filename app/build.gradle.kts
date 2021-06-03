@@ -76,10 +76,14 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
+    // coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+
     testImplementation("androidx.room:room-testing:$roomVersion")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation("org.robolectric:robolectric:4.3")
 
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
     testImplementation("androidx.test:runner:1.3.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
