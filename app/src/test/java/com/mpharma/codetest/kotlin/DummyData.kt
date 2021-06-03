@@ -1,4 +1,4 @@
-package com.mpharma.codetest
+package com.mpharma.codetest.kotlin
 
 import com.mpharma.codetest.data.api.PriceModel
 import com.mpharma.codetest.data.api.ProductModel

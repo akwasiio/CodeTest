@@ -1,4 +1,4 @@
-package com.mpharma.codetest.room
+package com.mpharma.codetest.kotlin.room
 
 import android.content.Context
 import androidx.room.Room
@@ -6,7 +6,7 @@ import androidx.room.withTransaction
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
-import com.mpharma.codetest.DummyData
+import com.mpharma.codetest.kotlin.DummyData
 import com.mpharma.codetest.data.local.ProductsDatabase
 import com.mpharma.codetest.data.local.dao.ProductsDao
 import com.mpharma.codetest.data.local.entities.PriceEntity
