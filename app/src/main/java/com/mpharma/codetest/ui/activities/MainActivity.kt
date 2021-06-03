@@ -1,7 +1,8 @@
-package com.mpharma.codetest
+package com.mpharma.codetest.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mpharma.codetest.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
