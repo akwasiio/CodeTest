@@ -2,7 +2,7 @@ package com.mpharma.codetest.data.local.dao
 
 import androidx.room.*
 import com.mpharma.codetest.data.local.entities.PriceEntity
-import com.mpharma.codetest.data.local.entities.ProductAndPrices
+import com.mpharma.codetest.data.local.entities.ProductAndPricesEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
 
 @Dao
@@ -24,7 +24,7 @@ interface ProductsDao {
 
     @Transaction
     @Query("SELECT * FROM products")
-    suspend fun getProducts(): List<ProductAndPrices>
+    suspend fun getProducts(): List<ProductAndPricesEntity>
 
     @Delete
     suspend fun deleteProduct(product: ProductEntity)
