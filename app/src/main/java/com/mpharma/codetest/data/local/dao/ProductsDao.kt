@@ -27,9 +27,9 @@ interface ProductsDao {
     @Query("SELECT * FROM products")
     fun getProducts(): Flow<List<ProductAndPricesEntity>>
 
-    @Delete
-    suspend fun deleteProduct(product: ProductEntity)
+    @Query("DELETE FROM products WHERE id = :id")
+    suspend fun deleteProductBy(id: String)
 
     @Query("SELECT * FROM prices WHERE productId = :productId")
-    suspend fun getPricesForProduct(productId: Long): List<PriceEntity>
+    suspend fun getPricesForProduct(productId: String): List<PriceEntity>
 }
