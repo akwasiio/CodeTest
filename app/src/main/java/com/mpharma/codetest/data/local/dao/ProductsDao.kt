@@ -4,6 +4,7 @@ import androidx.room.*
 import com.mpharma.codetest.data.local.entities.PriceEntity
 import com.mpharma.codetest.data.local.entities.ProductAndPricesEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductsDao {
@@ -24,7 +25,7 @@ interface ProductsDao {
 
     @Transaction
     @Query("SELECT * FROM products")
-    suspend fun getProducts(): List<ProductAndPricesEntity>
+    fun getProducts(): Flow<List<ProductAndPricesEntity>>
 
     @Delete
     suspend fun deleteProduct(product: ProductEntity)
