@@ -26,6 +26,5 @@ To build this project you require:
 - [Truth](https://truth.dev/) - Assertions Library,provides readability as far as assertions are concerned
 - [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver) - web server for testing HTTP clients ,verify requests and responses on the star wars api with the retrofit client.
 - [Robolectric](http://robolectric.org/) - Unit test on android framework.
-- [Espresso](https://developer.android.com/training/testing/espresso) - Test framework to write UI Tests
 - [Dagger Hilt](https://dagger.dev/hilt) - handles dependency injection
  
