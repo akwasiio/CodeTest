@@ -1,3 +1,5 @@
 package com.mpharma.codetest.data.api
 
-data class PriceModel(val id: Int, val price: Double, val date: String)
+import java.util.Date
+
+data class PriceModel(val id: Int, val price: Double, val date: Date)

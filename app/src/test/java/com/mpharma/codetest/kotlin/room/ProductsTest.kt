@@ -11,7 +11,6 @@ import com.mpharma.codetest.data.local.ProductsDatabase
 import com.mpharma.codetest.data.local.dao.ProductsDao
 import com.mpharma.codetest.data.local.entities.PriceEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After

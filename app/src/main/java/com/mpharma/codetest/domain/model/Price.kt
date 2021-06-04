@@ -1,3 +1,5 @@
 package com.mpharma.codetest.domain.model
 
-data class Price(val price: Double, val date: String, val productId: String)
+import java.util.Date
+
+data class Price(val price: Double, val date: Date, val productId: String)

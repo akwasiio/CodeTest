@@ -11,6 +11,6 @@ class EntityToPriceMapper @Inject constructor() : BaseMapper<PriceEntity, Price>
     }
 
     override fun mapInputList(input: List<PriceEntity>): List<Price> {
-        return input.map { map(it) }
+        return input.map { map(it) }.sortedByDescending { it.date }
     }
 }
