@@ -32,19 +32,26 @@ class AddProductActivity : AppCompatActivity() {
 
         if (intent.hasExtra("product_id")) {
             supportActionBar?.title = "Edit Product"
-            productId = intent.getStringExtra("product_id")
-            productName = intent.getStringExtra("product_name")
-            latestPrice = intent.getDoubleExtra("price", 0.0)
-
-            binding.priceEditText.setText(latestPrice.toString())
-            binding.productNameEditText.setText(productName)
-            viewModel.setProductName(productName!!)
-            viewModel.setPrice(latestPrice.toString())
+            handleIntents()
+            updateUI()
         }
 
         observeTextFields()
         setupButtonClickListener()
         observeButton()
+    }
+
+    private fun handleIntents() {
+        productId = intent.getStringExtra("product_id")
+        productName = intent.getStringExtra("product_name")
+        latestPrice = intent.getDoubleExtra("price", 0.0)
+    }
+
+    private fun updateUI() {
+        binding.priceEditText.setText(latestPrice.toString())
+        binding.productNameEditText.setText(productName)
+        viewModel.setProductName(productName!!)
+        viewModel.setPrice(latestPrice.toString())
     }
 
     private fun observeTextFields() {
@@ -60,8 +67,16 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun setupButtonClickListener() {
+        fun clearEditTexts() {
+            with(binding) {
+                priceEditText.text!!.clear()
+                productNameEditText.text!!.clear()
+                productNameEditText.requestFocus()
+            }
+        }
+
         with(binding) {
-            binding.addProductButton.setOnClickListener {
+            addProductButton.setOnClickListener {
                 val productName = productNameEditText.text.toString()
                 val price = priceEditText.text.toString().toDouble()
 
@@ -71,12 +86,11 @@ class AddProductActivity : AppCompatActivity() {
                     updateExistingProduct(productName, price)
                 }
 
-                priceEditText.text!!.clear()
-                productNameEditText.text!!.clear()
-                productNameEditText.requestFocus()
+                clearEditTexts()
             }
         }
     }
+
 
     private fun observeButton() {
         lifecycleScope.launch {

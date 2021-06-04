@@ -28,14 +28,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initAdapter()
+        setupRecyclerView()
         setupFabClickListener()
-
-        lifecycleScope.launchWhenStarted {
-            mainViewModel.state.collect { screenState ->
-                handleScreenState(screenState)
-            }
-        }
-
+        observeScreenState()
     }
 
     private fun initAdapter() {
@@ -43,7 +38,9 @@ class MainActivity : AppCompatActivity() {
             ProductsAdapter(onClick = { startDetailActivity(it.prices.first().productId) }) { productId ->
                 mainViewModel.deleteProduct(productId)
             }
+    }
 
+    private fun setupRecyclerView() {
         with(binding) {
             productsRecyclerView.adapter = adapter
             productsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -53,6 +50,14 @@ class MainActivity : AppCompatActivity() {
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+    }
+
+    private fun observeScreenState() {
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.state.collect { screenState ->
+                handleScreenState(screenState)
+            }
         }
     }
 
