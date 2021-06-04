@@ -32,4 +32,7 @@ interface ProductsDao {
 
     @Query("SELECT * FROM prices WHERE productId = :productId")
     suspend fun getPricesForProduct(productId: String): List<PriceEntity>
+
+    @Query("SELECT * FROM products WHERE id = :productId")
+    fun getProductWithPrices(productId: String): Flow<ProductAndPricesEntity>
 }

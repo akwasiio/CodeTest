@@ -11,7 +11,6 @@ import com.mpharma.codetest.data.local.ProductsDatabase
 import com.mpharma.codetest.data.local.dao.ProductsDao
 import com.mpharma.codetest.data.local.entities.PriceEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -68,6 +67,22 @@ class ProductsTest {
         assertThat(productsAndPrices).isNotNull()
         assertThat(productsAndPrices).isNotEmpty()
         assertThat(productsAndPrices.first().product.name).isEqualTo(productsFromApi.first().name)
+    }
+
+    @Test
+    fun `given an id, return a product with its price list`() = runBlocking {
+        val productEntity = DummyData.productEntity
+        productsDao.insertProduct(productEntity)
+
+        val price = DummyData.priceEntity.copy(productId = productEntity.id)
+        val prices = listOf(price, price.copy(price = 100.0), price.copy(price = 60.0))
+        productsDao.insertPrices(prices)
+
+        val productWithPrices = productsDao.getProductWithPrices(productEntity.id).first()
+
+        assertThat(productWithPrices.product.id).isEqualTo(productEntity.id)
+        assertThat(productWithPrices.product.name).isEqualTo(productEntity.name)
+        assertThat(productWithPrices.prices.size).isEqualTo(prices.size)
     }
 
     @Test

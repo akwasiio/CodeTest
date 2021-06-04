@@ -3,14 +3,13 @@ package com.mpharma.codetest.ui.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mpharma.codetest.databinding.ActivityMainBinding
-import com.mpharma.codetest.ui.ScreenState
+import com.mpharma.codetest.ui.screenstates.ScreenState
 import com.mpharma.codetest.ui.adapters.ProductsAdapter
 import com.mpharma.codetest.ui.viewmodels.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,11 +39,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = ProductsAdapter(onClick = {
-
-        }) { productId ->
-            mainViewModel.deleteProduct(productId)
-        }
+        adapter =
+            ProductsAdapter(onClick = { startDetailActivity(it.prices.first().productId) }) { productId ->
+                mainViewModel.deleteProduct(productId)
+            }
 
         with(binding) {
             productsRecyclerView.adapter = adapter
@@ -79,5 +77,11 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener {
             startActivity(Intent(this, AddProductActivity::class.java))
         }
+    }
+
+    private fun startDetailActivity(productId: String) {
+        val intent = Intent(this, ProductDetailActivity::class.java)
+        intent.putExtra("product_id", productId)
+        startActivity(intent)
     }
 }
