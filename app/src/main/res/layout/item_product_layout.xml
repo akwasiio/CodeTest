@@ -14,7 +14,7 @@
         android:textStyle="normal"
         android:textSize="20sp"
         android:textAlignment="viewStart"
-        android:textColor="@color/black" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/latestPriceTextView"
