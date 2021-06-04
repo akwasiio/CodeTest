@@ -2,8 +2,10 @@ package com.mpharma.codetest.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.mpharma.codetest.R
 import com.mpharma.codetest.databinding.ItemProductLayoutBinding
 import com.mpharma.codetest.domain.model.ProductAndPrices
 
@@ -45,7 +47,7 @@ class ProductsViewHolder(private val binding: ItemProductLayoutBinding) :
     ) {
         with(binding) {
             productNameTextView.text = item.product.name
-            latestPriceTextView.text = "$" + item.prices.first().price
+            latestPriceTextView.text = binding.root.resources.getString(R.string.amount, item.prices.first().price.toString())
 
             root.setOnClickListener { onClickHandler(item) }
             deleteIcon.setOnClickListener { onDeleteHandler(item.product.id) }

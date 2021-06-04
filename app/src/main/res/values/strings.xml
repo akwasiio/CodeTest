@@ -6,4 +6,5 @@
     <string name="add_product">Add Product</string>
     <string name="delete_icon">Delete icon</string>
     <string name="price_history">Price history</string>
+    <string name="amount">₵ %1$s </string>
 </resources>

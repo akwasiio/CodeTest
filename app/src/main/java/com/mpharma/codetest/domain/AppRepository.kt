@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -72,7 +73,7 @@ class AppRepositoryImpl @Inject constructor(
         val productEntity = productToEntityMapper.map(Product(name = productName))
 
         productsDao.insertProduct(productToEntityMapper.map(Product(name = productName)))
-        addNewPriceToProduct(Price(price = price, date = "", productId = productEntity.id))
+        addNewPriceToProduct(Price(price = price, date = Date(), productId = productEntity.id))
     }
 
     override suspend fun addNewPriceToProduct(price: Price) {

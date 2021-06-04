@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.mpharma.codetest.R
 import com.mpharma.codetest.databinding.ItemPriceHistoryLayoutBinding
 import com.mpharma.codetest.domain.model.Price
+import com.mpharma.codetest.format
 
 class PriceHistoryAdapter : RecyclerView.Adapter<PriceHistoryViewHolder>() {
     private val items = mutableListOf<Price>()
@@ -37,8 +39,8 @@ class PriceHistoryAdapter : RecyclerView.Adapter<PriceHistoryViewHolder>() {
 class PriceHistoryViewHolder(private val binding: ItemPriceHistoryLayoutBinding): RecyclerView.ViewHolder(binding.root) {
     fun bind(item: Price) {
         with(binding) {
-            dateTextView.text = item.date
-            priceTextView.text = item.price.toString()
+            dateTextView.text = item.date.format()
+            priceTextView.text = binding.root.resources.getString(R.string.amount, item.price.toString())
         }
     }
 }
