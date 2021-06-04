@@ -31,4 +31,10 @@ class MainActivityViewModel @Inject constructor(private val repository: AppRepos
             }
         }
     }
+
+    fun deleteProduct(productId: String) {
+        viewModelScope.launch {
+            repository.deleteProductBy(productId)
+        }
+    }
 }

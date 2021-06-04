@@ -40,8 +40,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = ProductsAdapter {
-            Log.e("Clicked", "Product ${it.product.name} has been clicked")
+        adapter = ProductsAdapter(onClick = {
+
+        }) { productId ->
+            mainViewModel.deleteProduct(productId)
         }
 
         with(binding) {
