@@ -27,18 +27,15 @@ import javax.inject.Singleton
 interface AppRepository {
     suspend fun getProductsWithPrices(): Flow<List<ProductAndPrices>>
 
+    fun getProductWithPrices(productId: String): Flow<ProductAndPrices>
+
     suspend fun addNewProduct(productName: String, price: Double)
 
     suspend fun addNewPriceToProduct(price: Price)
 
-    suspend fun addNewPricesToProduct(prices: List<Price>)
-
     suspend fun deleteProductBy(id: String)
 
-    suspend fun updateProduct(product: Product)
-
-    fun getProductWithPrices(productId: String): Flow<ProductAndPrices>
-
+    suspend fun updateProduct(productId: String, productName: String, price: Double, withNewPrice: Boolean)
 }
 
 @Singleton
@@ -80,16 +77,28 @@ class AppRepositoryImpl @Inject constructor(
         productsDao.insertPrice(priceToEntityMapper.map(price))
     }
 
-    override suspend fun addNewPricesToProduct(prices: List<Price>) {
-        productsDao.insertPrices(priceToEntityMapper.mapInputList(prices))
-    }
-
     override suspend fun deleteProductBy(id: String) {
         productsDao.deleteProductBy(id)
     }
 
-    override suspend fun updateProduct(product: Product) {
-        // TODO: UPDATE PRODUCT
+    override suspend fun updateProduct(
+        productId: String,
+        productName: String,
+        price: Double,
+        withNewPrice: Boolean
+    ) {
+        updateProduct(productId, productName)
+
+        if(withNewPrice){
+            addNewPriceToProduct(Price(price = price, date = Date(), productId = productId))
+        }
+    }
+
+    private suspend fun updateProduct(productId: String, productName: String) {
+        val productEntity =
+            productToEntityMapper.map(Product(name = productName)).copy(id = productId)
+
+        productsDao.insertProduct(productEntity)
     }
 
     override fun getProductWithPrices(productId: String): Flow<ProductAndPrices> {
