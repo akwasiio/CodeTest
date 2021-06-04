@@ -2,7 +2,6 @@ package com.mpharma.codetest.domain
 
 import androidx.room.withTransaction
 import com.mpharma.codetest.data.api.ApiDataSource
-import com.mpharma.codetest.data.api.ApiService
 import com.mpharma.codetest.data.local.ProductsDatabase
 import com.mpharma.codetest.data.local.dao.ProductsDao
 import com.mpharma.codetest.data.local.entities.PriceEntity
@@ -14,12 +13,16 @@ import com.mpharma.codetest.domain.mappers.ProductToEntityMapper
 import com.mpharma.codetest.domain.model.Price
 import com.mpharma.codetest.domain.model.Product
 import com.mpharma.codetest.domain.model.ProductAndPrices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface AppRepository {
-    suspend fun getProductsWithPrices(): List<ProductAndPrices>
+    suspend fun getProductsWithPrices(): Flow<List<ProductAndPrices>>
 
     suspend fun addNewProduct(product: Product)
 
@@ -31,7 +34,7 @@ interface AppRepository {
 
     suspend fun updateProduct(product: Product)
 
-    suspend fun fetchProductsFromServer()
+//    suspend fun fetchProductsFromServer()
 
 }
 
@@ -45,15 +48,22 @@ class AppRepositoryImpl @Inject constructor(
     private val priceToEntityMapper: PriceToEntityMapper,
     private val productToEntityMapper: ProductToEntityMapper
 ) : AppRepository {
-    override suspend fun getProductsWithPrices(): List<ProductAndPrices> {
-        val entities = productsDao.getProducts()
+    override suspend fun getProductsWithPrices(): Flow<List<ProductAndPrices>> = flow {
+        productsDao.getProducts().collect { entities ->
+            val productsAndPrices = entities.map {
+                ProductAndPrices(
+                    product = entityToProductMapper.map(it.product),
+                    prices = entityToPriceMapper.mapInputList(it.prices)
+                )
+            }
 
-        return entities.map {
-            ProductAndPrices(
-                product = entityToProductMapper.map(it.product),
-                prices = entityToPriceMapper.mapInputList(it.prices)
-            )
+            if (productsAndPrices.isEmpty()) {
+                fetchProductsFromServer()
+            }
+
+            emit(productsAndPrices)
         }
+
     }
 
     override suspend fun addNewProduct(product: Product) {
@@ -76,7 +86,7 @@ class AppRepositoryImpl @Inject constructor(
         // TODO: UPDATE PRODUCT
     }
 
-    override suspend fun fetchProductsFromServer() {
+    private suspend fun fetchProductsFromServer() = withContext(Dispatchers.IO) {
         apiDataSource.fetchProducts().collect { products ->
             database.withTransaction {
                 products.forEach { product ->
