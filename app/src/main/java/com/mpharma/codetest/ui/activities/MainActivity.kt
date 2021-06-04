@@ -3,6 +3,7 @@ package com.mpharma.codetest.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,11 +50,12 @@ class MainActivity : AppCompatActivity() {
     private fun handleScreenState(state: ScreenState) {
         when(state) {
             is ScreenState.Success -> {
+                binding.progressBar.visibility = View.GONE
                 adapter.setData(state.data)
             }
 
             is ScreenState.Loading -> {
-                // TODO: SHOW PROGRESS BAR
+                binding.progressBar.visibility = View.VISIBLE
             }
 
             is ScreenState.Error -> {
