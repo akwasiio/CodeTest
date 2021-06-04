@@ -17,6 +17,7 @@ class AddProductActivityViewModel @Inject constructor(private val appRepositoryI
     private val productName = MutableStateFlow("")
     private val priceFlow = MutableStateFlow("")
 
+
     fun addProduct(productName: String, price: Double) {
         viewModelScope.launch {
             appRepositoryImpl.addNewProduct(productName, price)
@@ -33,5 +34,16 @@ class AddProductActivityViewModel @Inject constructor(private val appRepositoryI
 
     val isAddProductEnabled: Flow<Boolean> = combine(productName, priceFlow) { product, price ->
         return@combine product.isNotEmpty() && price.isNotEmpty()
+    }
+
+    fun updateExistingProduct(
+        productId: String,
+        productName: String,
+        price: Double,
+        withNewPrice: Boolean = false
+    ) {
+        viewModelScope.launch {
+            appRepositoryImpl.updateProduct(productId, productName, price, withNewPrice)
+        }
     }
 }
