@@ -4,16 +4,17 @@ import com.mpharma.codetest.data.api.PriceModel
 import com.mpharma.codetest.data.api.ProductModel
 import com.mpharma.codetest.data.local.entities.PriceEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
+import java.util.*
 
 internal object DummyData {
     val productEntity = ProductEntity(name = "Paracetamol")
 
-    val priceEntity = PriceEntity(price = 19.0, date = "", productId = 1)
+    val priceEntity = PriceEntity(price = 19.0, date = "", productId = UUID.randomUUID().toString())
 
     val products = listOf(
         ProductEntity(name = "Paracetamol"),
-        ProductEntity("Exforge 10mg"),
-        ProductEntity("Exforge 20mg")
+        ProductEntity(name ="Exforge 10mg"),
+        ProductEntity(name ="Exforge 20mg")
     )
 
     val productModel = listOf(
