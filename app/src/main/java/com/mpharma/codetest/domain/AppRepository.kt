@@ -24,7 +24,7 @@ import javax.inject.Singleton
 interface AppRepository {
     suspend fun getProductsWithPrices(): Flow<List<ProductAndPrices>>
 
-    suspend fun addNewProduct(product: Product)
+    suspend fun addNewProduct(productName: String, price: Double)
 
     suspend fun addNewPriceToProduct(price: Price)
 
@@ -66,8 +66,9 @@ class AppRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun addNewProduct(product: Product) {
-        productsDao.insertProduct(productToEntityMapper.map(product))
+    override suspend fun addNewProduct(productName: String, price: Double) {
+        val productId = productsDao.insertProduct(productToEntityMapper.map(Product(productName)))
+        addNewPriceToProduct(Price(price = price, date = "", productId = productId))
     }
 
     override suspend fun addNewPriceToProduct(price: Price) {
