@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CodeTest</string>
+    <string name="floating_action_button">Floating action button</string>
+    <string name="product_name">Product name</string>
+    <string name="price">Price</string>
+    <string name="add_product">Add Product</string>
 </resources>
