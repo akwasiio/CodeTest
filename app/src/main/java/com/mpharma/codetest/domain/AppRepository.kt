@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.room.withTransaction
 import com.mpharma.codetest.data.api.ApiDataSource
 import com.mpharma.codetest.data.local.ProductsDatabase
-import com.mpharma.codetest.data.local.dao.ProductsDao
 import com.mpharma.codetest.data.local.entities.PriceEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
 import com.mpharma.codetest.domain.mappers.EntityToPriceMapper
@@ -41,7 +40,6 @@ interface AppRepository {
 @Singleton
 class AppRepositoryImpl @Inject constructor(
     private val apiDataSource: ApiDataSource,
-    private val productsDao: ProductsDao,
     private val database: ProductsDatabase,
     private val entityToPriceMapper: EntityToPriceMapper,
     private val entityToProductMapper: EntityToProductMapper,
@@ -49,7 +47,7 @@ class AppRepositoryImpl @Inject constructor(
     private val productToEntityMapper: ProductToEntityMapper
 ) : AppRepository {
     override suspend fun getProductsWithPrices(): Flow<List<ProductAndPrices>> = flow {
-        productsDao.getProducts().collect { entities ->
+        database.productsDao().getProducts().collect { entities ->
             val productsAndPrices = entities.map {
                 ProductAndPrices(
                     product = entityToProductMapper.map(it.product),
@@ -69,16 +67,16 @@ class AppRepositoryImpl @Inject constructor(
     override suspend fun addNewProduct(productName: String, price: Double) {
         val productEntity = productToEntityMapper.map(Product(name = productName))
 
-        productsDao.insertProduct(productEntity)
+        database.productsDao().insertProduct(productEntity)
         addNewPriceToProduct(Price(price = price, date = Date(), productId = productEntity.id))
     }
 
     override suspend fun addNewPriceToProduct(price: Price) {
-        productsDao.insertPrice(priceToEntityMapper.map(price))
+        database.productsDao().insertPrice(priceToEntityMapper.map(price))
     }
 
     override suspend fun deleteProductBy(id: String) {
-        productsDao.deleteProductBy(id)
+        database.productsDao().deleteProductBy(id)
     }
 
     override suspend fun updateProduct(
@@ -98,11 +96,11 @@ class AppRepositoryImpl @Inject constructor(
         val productEntity =
             productToEntityMapper.map(Product(name = productName)).copy(id = productId)
 
-        productsDao.insertProduct(productEntity)
+        database.productsDao().insertProduct(productEntity)
     }
 
     override fun getProductWithPrices(productId: String): Flow<ProductAndPrices> {
-        return productsDao.getProductWithPrices(productId).map {
+        return database.productsDao().getProductWithPrices(productId).map {
             Log.e("InRepo", it.product.name)
 
             ProductAndPrices(
@@ -117,7 +115,7 @@ class AppRepositoryImpl @Inject constructor(
             database.withTransaction {
                 products.forEach { product ->
                     val productEntity = ProductEntity(name = product.name)
-                    productsDao.insertProduct(productEntity)
+                    database.productsDao().insertProduct(productEntity)
 
                     val priceEntities = product.prices.map {
                         PriceEntity(
@@ -127,7 +125,7 @@ class AppRepositoryImpl @Inject constructor(
                         )
                     }
 
-                    productsDao.insertPrices(priceEntities)
+                    database.productsDao().insertPrices(priceEntities)
                 }
             }
         }
