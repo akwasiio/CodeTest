@@ -1,5 +1,6 @@
 package com.mpharma.codetest.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initAdapter()
+        setupFabClickListener()
 
         lifecycleScope.launchWhenStarted {
             mainViewModel.state.collect { screenState ->
@@ -61,6 +63,12 @@ class MainActivity : AppCompatActivity() {
             is ScreenState.Error -> {
                 // TODO: SHOW ERROR
             }
+        }
+    }
+
+    private fun setupFabClickListener() {
+        binding.fab.setOnClickListener {
+            startActivity(Intent(this, AddProductActivity::class.java))
         }
     }
 }
