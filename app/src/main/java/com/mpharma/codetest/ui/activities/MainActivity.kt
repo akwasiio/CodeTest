@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mpharma.codetest.databinding.ActivityMainBinding
 import com.mpharma.codetest.ui.ScreenState
@@ -46,11 +47,17 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             productsRecyclerView.adapter = adapter
             productsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+            productsRecyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    this@MainActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
     }
 
     private fun handleScreenState(state: ScreenState) {
-        when(state) {
+        when (state) {
             is ScreenState.Success -> {
                 binding.progressBar.visibility = View.GONE
                 adapter.setData(state.data)
