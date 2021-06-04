@@ -82,7 +82,7 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     private fun openProductFormActivity() {
-        val intent = Intent(this, AddProductActivity::class.java)
+        val intent = Intent(this, ProductFormActivity::class.java)
         intent.putExtra("product_id", productId)
         intent.putExtra("product_name", productName)
         intent.putExtra("price", latestPrice!!)

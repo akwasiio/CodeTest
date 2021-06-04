@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ProductsAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -28,14 +29,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initAdapter()
+        setupRecyclerView()
         setupFabClickListener()
-
-        lifecycleScope.launchWhenStarted {
-            mainViewModel.state.collect { screenState ->
-                handleScreenState(screenState)
-            }
-        }
-
+        observeScreenState()
     }
 
     private fun initAdapter() {
@@ -43,7 +39,9 @@ class MainActivity : AppCompatActivity() {
             ProductsAdapter(onClick = { startDetailActivity(it.prices.first().productId) }) { productId ->
                 mainViewModel.deleteProduct(productId)
             }
+    }
 
+    private fun setupRecyclerView() {
         with(binding) {
             productsRecyclerView.adapter = adapter
             productsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -53,6 +51,14 @@ class MainActivity : AppCompatActivity() {
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+    }
+
+    private fun observeScreenState() {
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.state.collect { screenState ->
+                handleScreenState(screenState)
+            }
         }
     }
 
@@ -75,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFabClickListener() {
         binding.fab.setOnClickListener {
-            startActivity(Intent(this, AddProductActivity::class.java))
+            startActivity(Intent(this, ProductFormActivity::class.java))
         }
     }
 

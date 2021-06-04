@@ -14,7 +14,7 @@ import javax.inject.Inject
 class AddProductActivityViewModel @Inject constructor(private val appRepositoryImpl: AppRepositoryImpl) :
     ViewModel() {
 
-    private val productName = MutableStateFlow("")
+    private val productNameFlow = MutableStateFlow("")
     private val priceFlow = MutableStateFlow("")
 
 
@@ -25,14 +25,14 @@ class AddProductActivityViewModel @Inject constructor(private val appRepositoryI
     }
 
     fun setProductName(name: String) {
-        productName.value = name
+        productNameFlow.value = name
     }
 
     fun setPrice(price: String) {
         priceFlow.value = price
     }
 
-    val isAddProductEnabled: Flow<Boolean> = combine(productName, priceFlow) { product, price ->
+    val isAddProductEnabled: Flow<Boolean> = combine(productNameFlow, priceFlow) { product, price ->
         return@combine product.isNotEmpty() && price.isNotEmpty()
     }
 
@@ -40,7 +40,7 @@ class AddProductActivityViewModel @Inject constructor(private val appRepositoryI
         productId: String,
         productName: String,
         price: Double,
-        withNewPrice: Boolean = false
+        withNewPrice: Boolean
     ) {
         viewModelScope.launch {
             appRepositoryImpl.updateProduct(productId, productName, price, withNewPrice)
