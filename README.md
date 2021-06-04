@@ -13,6 +13,10 @@ To build this project you require:
   - Android Studio 4.2 or higher
   - Gradle 6.6+
 
+# Installation
+
+To install, download `app-debug.apk` onto any Android device running Android Lollipop or higher.
+
   
 ## Libraries
 
