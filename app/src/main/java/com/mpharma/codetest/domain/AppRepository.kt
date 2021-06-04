@@ -72,7 +72,7 @@ class AppRepositoryImpl @Inject constructor(
     override suspend fun addNewProduct(productName: String, price: Double) {
         val productEntity = productToEntityMapper.map(Product(name = productName))
 
-        productsDao.insertProduct(productToEntityMapper.map(Product(name = productName)))
+        productsDao.insertProduct(productEntity)
         addNewPriceToProduct(Price(price = price, date = Date(), productId = productEntity.id))
     }
 
