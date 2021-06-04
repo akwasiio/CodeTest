@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddProductActivity : AppCompatActivity() {
+class ProductFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddProductBinding
     private val viewModel: AddProductActivityViewModel by viewModels()
 
@@ -84,6 +84,7 @@ class AddProductActivity : AppCompatActivity() {
                     addNewProduct(productName, price)
                 } else {
                     updateExistingProduct(productName, price)
+                    finish()
                 }
 
                 clearEditTexts()

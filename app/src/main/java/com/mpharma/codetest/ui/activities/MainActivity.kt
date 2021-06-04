@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ProductsAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFabClickListener() {
         binding.fab.setOnClickListener {
-            startActivity(Intent(this, AddProductActivity::class.java))
+            startActivity(Intent(this, ProductFormActivity::class.java))
         }
     }
 
