@@ -1,4 +1,4 @@
-package com.mpharma.codetest.ui
+package com.mpharma.codetest.ui.screenstates
 
 import com.mpharma.codetest.domain.model.ProductAndPrices
 
