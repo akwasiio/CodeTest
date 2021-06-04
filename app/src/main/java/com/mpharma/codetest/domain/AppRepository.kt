@@ -30,7 +30,7 @@ interface AppRepository {
 
     suspend fun addNewPricesToProduct(prices: List<Price>)
 
-    suspend fun deleteProduct(product: Product)
+    suspend fun deleteProductBy(id: String)
 
     suspend fun updateProduct(product: Product)
 
@@ -67,8 +67,10 @@ class AppRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addNewProduct(productName: String, price: Double) {
-        val productId = productsDao.insertProduct(productToEntityMapper.map(Product(productName)))
-        addNewPriceToProduct(Price(price = price, date = "", productId = productId))
+        val productEntity = productToEntityMapper.map(Product(name = productName))
+
+        productsDao.insertProduct(productToEntityMapper.map(Product(name = productName)))
+        addNewPriceToProduct(Price(price = price, date = "", productId = productEntity.id))
     }
 
     override suspend fun addNewPriceToProduct(price: Price) {
@@ -79,8 +81,8 @@ class AppRepositoryImpl @Inject constructor(
         productsDao.insertPrices(priceToEntityMapper.mapInputList(prices))
     }
 
-    override suspend fun deleteProduct(product: Product) {
-        productsDao.deleteProduct(product = productToEntityMapper.map(product))
+    override suspend fun deleteProductBy(id: String) {
+        productsDao.deleteProductBy(id)
     }
 
     override suspend fun updateProduct(product: Product) {
@@ -91,13 +93,14 @@ class AppRepositoryImpl @Inject constructor(
         apiDataSource.fetchProducts().collect { products ->
             database.withTransaction {
                 products.forEach { product ->
-                    val productId = productsDao.insertProduct(ProductEntity(product.name))
+                    val productEntity = ProductEntity(name = product.name)
+                    productsDao.insertProduct(productEntity)
 
                     val priceEntities = product.prices.map {
                         PriceEntity(
                             price = it.price,
                             date = it.date,
-                            productId = productId
+                            productId = productEntity.id
                         )
                     }
 

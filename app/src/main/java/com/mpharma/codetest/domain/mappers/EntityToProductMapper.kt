@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class EntityToProductMapper @Inject constructor(): BaseMapper<ProductEntity, Product> {
     override fun map(input: ProductEntity): Product {
-        return Product(input.name)
+        return Product(input.id, input.name)
     }
 
     override fun mapInputList(input: List<ProductEntity>): List<Product> {

@@ -11,6 +11,6 @@ class ProductToEntityMapper @Inject constructor() : BaseMapper<Product, ProductE
     }
 
     override fun mapInputList(input: List<Product>): List<ProductEntity> {
-        return input.map { ProductEntity(it.name) }
+        return input.map { ProductEntity(name = it.name) }
     }
 }

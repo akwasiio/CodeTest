@@ -11,6 +11,8 @@ import com.mpharma.codetest.data.local.ProductsDatabase
 import com.mpharma.codetest.data.local.dao.ProductsDao
 import com.mpharma.codetest.data.local.entities.PriceEntity
 import com.mpharma.codetest.data.local.entities.ProductEntity
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -51,14 +53,18 @@ class ProductsTest {
         val productsFromApi = DummyData.productModel
         database.withTransaction {
             productsFromApi.forEach { product ->
-                val productId = productsDao.insertProduct(ProductEntity(name = product.name))
+                val productEntity = ProductEntity(name = product.name)
+
+                productsDao.insertProduct(productEntity)
                 val prices = product.prices.map {
-                    PriceEntity(price = it.price, date = it.date, productId = productId)
+                    PriceEntity(price = it.price, date = it.date, productId = productEntity.id)
                 }
                 productsDao.insertPrices(prices)
             }
         }
-        val productsAndPrices = productsDao.getProducts()
+
+        val productsAndPrices = productsDao.getProducts().first()
+
         assertThat(productsAndPrices).isNotNull()
         assertThat(productsAndPrices).isNotEmpty()
         assertThat(productsAndPrices.first().product.name).isEqualTo(productsFromApi.first().name)
@@ -66,16 +72,16 @@ class ProductsTest {
 
     @Test
     fun `check that deleting product does not delete price`() = runBlocking {
-        val product = DummyData.productEntity
-        val productId = productsDao.insertProduct(product)
+        val productEntity = DummyData.productEntity
+        productsDao.insertProduct(productEntity)
 
-        val price = DummyData.priceEntity.copy(productId = productId)
+        val price = DummyData.priceEntity.copy(productId = productEntity.id)
         productsDao.insertPrices(listOf(price))
 
         // delete product
-        productsDao.deleteProduct(product)
+        productsDao.deleteProductBy(productEntity.id)
 
-        val prices = productsDao.getPricesForProduct(productId)
+        val prices = productsDao.getPricesForProduct(productEntity.id)
 
         assertThat(prices).isNotNull()
         assertThat(prices).isNotEmpty()
