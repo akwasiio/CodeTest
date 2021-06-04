@@ -79,7 +79,7 @@ class ProductsTest {
         val prices = listOf(price, price.copy(price = 100.0), price.copy(price = 60.0))
         productsDao.insertPrices(prices)
 
-        val productWithPrices = productsDao.getProductWithPrices(productEntity.id)
+        val productWithPrices = productsDao.getProductWithPrices(productEntity.id).first()
 
         assertThat(productWithPrices.product.id).isEqualTo(productEntity.id)
         assertThat(productWithPrices.product.name).isEqualTo(productEntity.name)

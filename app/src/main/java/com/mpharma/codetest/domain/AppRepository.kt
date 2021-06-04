@@ -1,5 +1,6 @@
 package com.mpharma.codetest.domain
 
+import android.util.Log
 import androidx.room.withTransaction
 import com.mpharma.codetest.data.api.ApiDataSource
 import com.mpharma.codetest.data.local.ProductsDatabase
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,7 +36,7 @@ interface AppRepository {
 
     suspend fun updateProduct(product: Product)
 
-//    suspend fun fetchProductsFromServer()
+    fun getProductWithPrices(productId: String): Flow<ProductAndPrices>
 
 }
 
@@ -87,6 +89,17 @@ class AppRepositoryImpl @Inject constructor(
 
     override suspend fun updateProduct(product: Product) {
         // TODO: UPDATE PRODUCT
+    }
+
+    override fun getProductWithPrices(productId: String): Flow<ProductAndPrices> {
+        return productsDao.getProductWithPrices(productId).map {
+            Log.e("InRepo", it.product.name)
+
+            ProductAndPrices(
+                product = entityToProductMapper.map(it.product),
+                prices = entityToPriceMapper.mapInputList(it.prices)
+            )
+        }
     }
 
     private suspend fun fetchProductsFromServer() = withContext(Dispatchers.IO) {

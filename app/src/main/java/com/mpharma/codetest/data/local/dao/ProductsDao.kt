@@ -34,5 +34,5 @@ interface ProductsDao {
     suspend fun getPricesForProduct(productId: String): List<PriceEntity>
 
     @Query("SELECT * FROM products WHERE id = :productId")
-    suspend fun getProductWithPrices(productId: String): ProductAndPricesEntity
+    fun getProductWithPrices(productId: String): Flow<ProductAndPricesEntity>
 }
