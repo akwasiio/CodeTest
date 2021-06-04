@@ -30,6 +30,11 @@ class ProductDetailActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        supportActionBar?.title = "Product Details"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+
         productId = intent.getStringExtra("product_id") ?: return
         productDetailViewModel.getProductWithPrices(productId)
 
@@ -83,5 +88,10 @@ class ProductDetailActivity : AppCompatActivity() {
         intent.putExtra("price", latestPrice!!)
 
         startActivity(intent)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

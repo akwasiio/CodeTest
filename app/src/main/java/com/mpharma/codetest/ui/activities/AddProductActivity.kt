@@ -26,7 +26,12 @@ class AddProductActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        if(intent.hasExtra("product_id")) {
+        supportActionBar?.title = "Add Product"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        if (intent.hasExtra("product_id")) {
+            supportActionBar?.title = "Edit Product"
             productId = intent.getStringExtra("product_id")
             productName = intent.getStringExtra("product_name")
             latestPrice = intent.getDoubleExtra("price", 0.0)
@@ -88,5 +93,10 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun updateExistingProduct(productName: String, price: Double) {
         viewModel.updateExistingProduct(productId!!, productName, price, withNewPrice = price != latestPrice!!)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }
