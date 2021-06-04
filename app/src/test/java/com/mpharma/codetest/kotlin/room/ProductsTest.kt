@@ -87,4 +87,22 @@ class ProductsTest {
         assertThat(prices).isNotEmpty()
         assertThat(prices.size).isEqualTo(1)
     }
+
+    @Test
+    fun `check that price list count does not change when product name changes`() = runBlocking {
+        val productEntity = DummyData.productEntity
+        productsDao.insertProduct(productEntity)
+
+        val price = DummyData.priceEntity.copy(productId = productEntity.id)
+        productsDao.insertPrices(listOf(price))
+
+        // change name
+        productsDao.insertProduct(productEntity.copy(name = "Para"))
+        productsDao.insertPrices(listOf(price.copy(price = 80.0), price.copy(price = 100.0)))
+
+        val prices = productsDao.getPricesForProduct(productEntity.id)
+        assertThat(prices).isNotEmpty()
+        assertThat(prices).isNotNull()
+        assertThat(prices.size).isEqualTo(3)
+    }
 }
