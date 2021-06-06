@@ -28,7 +28,7 @@ To install, download `app-debug.apk` onto any Android device running Android Lol
 - [okhttp-logging-interceptor](https://github.com/square/okhttp/blob/master/okhttp-logging-interceptor/README.md) - logs HTTP request and response data.
 - [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Library Support for coroutines for asynchronous programming
 - [Truth](https://truth.dev/) - Assertions Library,provides readability as far as assertions are concerned
-- [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver) - web server for testing HTTP clients ,verify requests and responses on the star wars api with the retrofit client.
+- [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver) - web server for testing HTTP clients ,verify requests and responses on the mockyapi api with the retrofit client.
 - [Robolectric](http://robolectric.org/) - Unit test on android framework.
 - [Dagger Hilt](https://dagger.dev/hilt) - handles dependency injection
  
